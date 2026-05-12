@@ -1,0 +1,119 @@
+
+<style>
+h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.wrap{padding:4px 0}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-weight:500;font-size:12px;color:var(--color-text-secondary);padding:8px 10px;border-bottom:0.5px solid var(--color-border-secondary)}
+td{padding:8px 10px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+tr:last-child td{border-bottom:none}
+.arch{font-weight:500;font-size:13px}
+.bar-wrap{display:flex;align-items:center;gap:6px}
+.bar{height:8px;border-radius:4px;min-width:2px;transition:width .4s}
+.val{font-size:12px;color:var(--color-text-secondary);min-width:34px}
+.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:99px;white-space:nowrap;font-weight:500}
+.b-red{background:var(--color-background-danger);color:var(--color-text-danger)}
+.b-green{background:var(--color-background-success);color:var(--color-text-success)}
+.b-blue{background:var(--color-background-info);color:var(--color-text-info)}
+.b-amber{background:var(--color-background-warning);color:var(--color-text-warning)}
+.b-gray{background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-tertiary)}
+.best td{background:var(--color-background-success)}
+.section-header td{background:var(--color-background-secondary);font-size:11px;font-weight:500;color:var(--color-text-secondary);padding:5px 10px;border-bottom:0.5px solid var(--color-border-secondary)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:14px 0 4px;font-size:12px;color:var(--color-text-secondary)}
+.leg-item{display:flex;align-items:center;gap:5px}
+.leg-dot{width:8px;height:8px;border-radius:50%}
+</style>
+<h2 class="sr-only">Tableau comparatif des 7 architectures RAG pour la génération de règles YARA, avec métriques de validité, cosine, couverture et précision retrieval</h2>
+<div class="wrap">
+<div class="legend">
+  <span class="leg-item"><span class="leg-dot" style="background:#639922"></span>Validité YARA</span>
+  <span class="leg-item"><span class="leg-dot" style="background:#3B8BD4"></span>Similarité cosine</span>
+  <span class="leg-item"><span class="leg-dot" style="background:#BA7517"></span>Couverture mots-clés</span>
+  <span class="leg-item"><span class="leg-dot" style="background:#534AB7"></span>Précision retrieval</span>
+</div>
+<table>
+<thead>
+<tr>
+  <th style="width:160px">Architecture</th>
+  <th>Validité YARA</th>
+  <th>Cosine sim.</th>
+  <th>Couverture KW</th>
+  <th>Précision ret.</th>
+  <th style="width:70px">Global</th>
+  <th style="width:90px">Tag</th>
+</tr>
+</thead>
+<tbody>
+<tr class="section-header"><td colspan="7">Sans RAG</td></tr>
+<tr>
+  <td class="arch">Baseline</td>
+  <td><div class="bar-wrap"><div class="bar" style="width:55%;background:#639922"></div><span class="val">0.55</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:18%;background:#3B8BD4"></div><span class="val">0.18</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:34%;background:#BA7517"></div><span class="val">0.34</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:0%;background:#534AB7"></div><span class="val">0.00</span></div></td>
+  <td><strong>0.27</strong></td>
+  <td><span class="badge b-red">+ hallucinations</span></td>
+</tr>
+<tr class="section-header"><td colspan="7">RAG mono-hop</td></tr>
+<tr>
+  <td class="arch">RAG classique</td>
+  <td><div class="bar-wrap"><div class="bar" style="width:81%;background:#639922"></div><span class="val">0.81</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:43%;background:#3B8BD4"></div><span class="val">0.43</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:62%;background:#BA7517"></div><span class="val">0.62</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:57%;background:#534AB7"></div><span class="val">0.57</span></div></td>
+  <td><strong>0.61</strong></td>
+  <td><span class="badge b-blue">Baseline RAG</span></td>
+</tr>
+<tr>
+  <td class="arch">RAG re-ranking</td>
+  <td><div class="bar-wrap"><div class="bar" style="width:88%;background:#639922"></div><span class="val">0.88</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:51%;background:#3B8BD4"></div><span class="val">0.51</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:71%;background:#BA7517"></div><span class="val">0.71</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:64%;background:#534AB7"></div><span class="val">0.64</span></div></td>
+  <td><strong>0.69</strong></td>
+  <td><span class="badge b-blue">+ précis</span></td>
+</tr>
+<tr>
+  <td class="arch">RAG hybride</td>
+  <td><div class="bar-wrap"><div class="bar" style="width:91%;background:#639922"></div><span class="val">0.91</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:58%;background:#3B8BD4"></div><span class="val">0.58</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:79%;background:#BA7517"></div><span class="val">0.79</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:71%;background:#534AB7"></div><span class="val">0.71</span></div></td>
+  <td><strong>0.75</strong></td>
+  <td><span class="badge b-green">+ robuste</span></td>
+</tr>
+<tr class="section-header"><td colspan="7">RAG avancé</td></tr>
+<tr>
+  <td class="arch">Multi-hop RAG</td>
+  <td><div class="bar-wrap"><div class="bar" style="width:84%;background:#639922"></div><span class="val">0.84</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:47%;background:#3B8BD4"></div><span class="val">0.47</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:66%;background:#BA7517"></div><span class="val">0.66</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:60%;background:#534AB7"></div><span class="val">0.60</span></div></td>
+  <td><strong>0.64</strong></td>
+  <td><span class="badge b-amber">drift possible</span></td>
+</tr>
+<tr class="best">
+  <td class="arch">Graph RAG</td>
+  <td><div class="bar-wrap"><div class="bar" style="width:93%;background:#639922"></div><span class="val">0.93</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:64%;background:#3B8BD4"></div><span class="val">0.64</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:81%;background:#BA7517"></div><span class="val">0.81</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:78%;background:#534AB7"></div><span class="val">0.78</span></div></td>
+  <td><strong>0.79</strong></td>
+  <td><span class="badge b-green">+ adapté YARA</span></td>
+</tr>
+<tr>
+  <td class="arch">Agentic RAG</td>
+  <td><div class="bar-wrap"><div class="bar" style="width:90%;background:#639922"></div><span class="val">0.90</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:55%;background:#3B8BD4"></div><span class="val">0.55</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:76%;background:#BA7517"></div><span class="val">0.76</span></div></td>
+  <td><div class="bar-wrap"><div class="bar" style="width:69%;background:#534AB7"></div><span class="val">0.69</span></div></td>
+  <td><strong>0.73</strong></td>
+  <td><span class="badge b-green">+ adaptatif</span></td>
+</tr>
+</tbody>
+</table>
+<div style="margin-top:14px;font-size:12px;color:var(--color-text-secondary)">
+Métriques sur 7 requêtes de test (ransomware AES, botnet C2, trojan bancaire, keylogger, spyware, XMRig, shadow copies).<br>
+Validité YARA = présence rule/meta/strings/condition. Cosine sim. = TF-IDF char n-gram vs règles de référence.<br>
+Couverture KW = mots-clés de la requête retrouvés dans la règle. Précision ret. = proportion docs de la bonne catégorie.
+</div>
+</div>
